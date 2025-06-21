@@ -1,7 +1,11 @@
 import { error, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ locals, params }) => {
+export const load: PageServerLoad = async ({
+	locals,
+	params,
+	getClientAddress,
+}) => {
 	const auth = await locals.auth();
 
 	if (!auth) {
@@ -20,11 +24,25 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 	}
 
 	const query = await connection.query(
-		"SELECT * FROM admin_connections WHERE id = ? LIMIT 1",
-		[code]
+		"SELECT * FROM admin_connections WHERE id = ? AND ip = INET_ATON(?) LIMIT 1",
+		[code, getClientAddress()]
 	);
 
 	if (!query) {
+		if (
+			(
+				await connection.query(
+					"SELECT * FROM admin_connections WHERE id = ? LIMIT 1",
+					[code]
+				)
+			).length > 0
+		) {
+			throw error(
+				403,
+				`Browser address does not match the connection's source address (${getClientAddress()})`
+			);
+		}
+
 		throw error(404, "Verification code not found");
 	}
 

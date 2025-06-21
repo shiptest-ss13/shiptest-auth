@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+body {
+	background-color: darkslategrey;
+	background: radial-gradient(circle, #121212 10%, transparent 20%),
+		radial-gradient(circle at bottom left, #121212 5%, transparent 10%),
+		radial-gradient(circle at bottom right, #121212 5%, transparent 10%),
+		radial-gradient(circle at top left, #121212 5%, transparent 10%),
+		radial-gradient(circle at top right, #121212 5%, transparent 10%);
+	background-color: #282828;
+	background-size: 16px 16px;
+}

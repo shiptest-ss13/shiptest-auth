@@ -4,6 +4,7 @@ import type { PageServerLoad } from "./$types";
 export const load: PageServerLoad = async ({
 	locals,
 	params,
+	request,
 	getClientAddress,
 }) => {
 	const auth = await locals.auth();
@@ -23,9 +24,11 @@ export const load: PageServerLoad = async ({
 		throw error(400, "Verification code is required");
 	}
 
+	const ip = request.headers.get("x-forwarded-for") || getClientAddress();
+
 	const query = await connection.query(
 		"SELECT * FROM admin_connections WHERE id = ? AND ip = INET_ATON(?) LIMIT 1",
-		[code, getClientAddress()]
+		[code, ip]
 	);
 
 	if (!query[0]) {

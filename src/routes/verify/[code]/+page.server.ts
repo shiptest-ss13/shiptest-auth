@@ -31,14 +31,14 @@ export const load: PageServerLoad = async ({
 		[code, ip]
 	);
 
-	if (!query[0]) {
+	if (query.rows.length === 0) {
 		if (
 			(
 				await connection.query(
 					"SELECT * FROM admin_connections WHERE id = ? LIMIT 1",
 					[code]
 				)
-			).length > 0
+			).rows.length > 0
 		) {
 			throw error(
 				403,
@@ -49,7 +49,7 @@ export const load: PageServerLoad = async ({
 		throw error(404, "Verification code not found");
 	}
 
-	const result = query[0] as {
+	const result = query.rows[0] as {
 		id: number;
 		ckey: string;
 		ip: number;

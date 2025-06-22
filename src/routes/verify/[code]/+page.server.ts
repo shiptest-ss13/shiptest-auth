@@ -28,7 +28,7 @@ export const load: PageServerLoad = async ({
 		[code, getClientAddress()]
 	);
 
-	if (!query) {
+	if (!query[0]) {
 		if (
 			(
 				await connection.query(
@@ -53,7 +53,7 @@ export const load: PageServerLoad = async ({
 		verification_time: Date | null;
 	};
 
-	if (result.ckey !== auth.user?.ckey && !result.ckey.startsWith("guest")) {
+	if (result.ckey !== auth.user?.ckey) {
 		throw error(403, "You do not have permission to verify this code");
 	}
 

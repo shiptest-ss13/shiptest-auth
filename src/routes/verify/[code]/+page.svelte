@@ -4,6 +4,10 @@
 	let { data }: PageProps = $props();
 </script>
 
-{#if data.ckey}
-	<p>Verification of {data.ckey} successful.</p>
+{#if data.session}
+	<p class="text-center text-2xl">
+		Verified as {data.session.user?.byondkey}.
+	</p>
+{:else}
+	<p class="text-center text-2xl">You are not logged in.</p>
 {/if}

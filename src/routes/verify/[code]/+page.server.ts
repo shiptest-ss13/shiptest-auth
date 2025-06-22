@@ -4,7 +4,6 @@ import type { PageServerLoad } from "./$types";
 export const load: PageServerLoad = async ({
 	locals,
 	params,
-	request,
 	getClientAddress,
 }) => {
 	const auth = await locals.auth();
@@ -42,7 +41,7 @@ export const load: PageServerLoad = async ({
 		) {
 			throw error(
 				403,
-				`Browser address does not match the connection's source address (${ip})`
+				`Browser address does not match the connection's source address`
 			);
 		}
 

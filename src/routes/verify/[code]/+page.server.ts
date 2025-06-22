@@ -24,7 +24,7 @@ export const load: PageServerLoad = async ({
 		throw error(400, "Verification code is required");
 	}
 
-	const ip = request.headers.get("x-forwarded-for") || getClientAddress();
+	const ip = request.headers.get("X-Forwarded-For") || getClientAddress();
 
 	const query = await connection.query(
 		"SELECT * FROM admin_connections WHERE id = ? AND ip = INET_ATON(?) LIMIT 1",
@@ -42,7 +42,7 @@ export const load: PageServerLoad = async ({
 		) {
 			throw error(
 				403,
-				`Browser address does not match the connection's source address (${getClientAddress()})`
+				`Browser address does not match the connection's source address (${ip})`
 			);
 		}
 

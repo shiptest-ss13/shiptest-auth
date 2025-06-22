@@ -57,6 +57,7 @@ const authOptions = {
 			return session;
 		},
 	},
+	trustHost: true,
 } satisfies SvelteKitAuthConfig;
 
 export const { handle, signIn, signOut } = SvelteKitAuth(authOptions);

@@ -25,27 +25,26 @@ export const load: PageServerLoad = async ({
 
 	const ip = getClientAddress();
 
-	const query = await connection.query(
+	let query = await connection.query(
 		"SELECT * FROM admin_connections WHERE id = ? AND ip = INET_ATON(?) LIMIT 1",
 		[code, ip]
 	);
 
 	if (query.length === 0) {
-		if (
-			(
-				await connection.query(
-					"SELECT * FROM admin_connections WHERE id = ? LIMIT 1",
-					[code]
-				)
-			).length > 0
-		) {
+		query = await connection.query(
+			"SELECT * FROM admin_connections WHERE id = ? LIMIT 1",
+			[code]
+		);
+
+		if (query.length === 0) {
+			throw error(404, "Verification code not found");
+		} else if (query.length > 0 && !ip.includes(":")) {
+			// We can only verify IPv4 addresses
 			throw error(
 				403,
 				`Browser address does not match the connection's source address`
 			);
 		}
-
-		throw error(404, "Verification code not found");
 	}
 
 	const result = query[0] as {

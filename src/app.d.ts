@@ -5,6 +5,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			db: import("mariadb").Connection;
+			drizzle: import("./lib/server/db").Db;
 		}
 		// interface PageData {}
 		// interface PageState {}

@@ -9,6 +9,7 @@ import { sequence } from "@sveltejs/kit/hooks";
 import MariaDB from "mariadb";
 
 import { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } from "$env/static/private";
+import { db } from "$lib/server/db";
 
 // Initialize the MariaDB connection pool
 const pool = MariaDB.createPool({
@@ -33,6 +34,7 @@ async function databaseHandle({
 	try {
 		// Attach the connection to the event locals for use in routes
 		event.locals.db = connection;
+		event.locals.drizzle = db;
 
 		// Proceed with the request
 		return resolve(event);

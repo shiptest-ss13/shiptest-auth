@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import "../app.css";
 	import { SignIn, SignOut } from "@auth/sveltekit/components";
 	import { page } from "$app/state";

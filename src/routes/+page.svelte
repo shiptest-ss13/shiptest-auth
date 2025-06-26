@@ -1,7 +1,10 @@
-<script>
+<script lang="ts">
 	import { SignIn, SignOut } from "@auth/sveltekit/components";
 
 	import { page } from "$app/state";
+	import type { PageProps } from "./$types";
+
+	let { data }: PageProps = $props();
 </script>
 
 {#if page.data.session}
@@ -31,3 +34,5 @@
 		<div slot="submitButton" class="buttonPrimary">Sign in</div>
 	</SignIn>
 {/if}
+
+{data.coolStuff}

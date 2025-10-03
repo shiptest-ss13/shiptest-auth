@@ -55,7 +55,7 @@ export const load: PageServerLoad = async ({
 	};
 
 	if (result.ckey !== auth.user?.ckey) {
-		throw error(403, "You do not have permission to verify this code");
+		throw error(403, `You do not have permission to verify this code. Logged in as: ${auth.user?.ckey}, verification code for: ${result.ckey}`);
 	}
 
 	if (result.verification_time) {
